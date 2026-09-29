@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Status {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+enum MessageStatus {
+  UNREAD
+  READ
+  REPLIED
+  ARCHIVED
+}
+enum LinkType {
+  SOURCE_CODE
+  LIVE_DEMO
+  DOCUMENTATION
+  OTHER
+}
+
+enum Role {
+  USER
+  ADMIN
+  SYSTEM_ADMIN
+}
+
+model User {
+  id            String         @id @default("00000000-0000-0000-0000-000000000001")
+  email         String         @unique
+  password      String
+  name          String?
+  role          Role           @default(USER)
+  articles      Article[]
+  projects      Project[]
+  createdAt     DateTime       @default(now())
+  sessionTokens SessionToken[]
+}
+
+model Article {
+  id         String   @id @default(uuid())
+  title      String
+  slug       String   @unique
+  coverImage String
+  techStack  String[]
+  category   String?
+  excerpt    String?
+  content    String
+  status     Status   @default(DRAFT)
+  featured   Boolean  @default(false)
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  projectId String?
+
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([id])
+  @@index([slug])
+}
+
+model Project {
+  id          String        @id @default(uuid())
+  name        String
+  description String?
+  content     String
+  coverImage  String
+  status      Status        @default(DRAFT)
+  slug        String        @unique
+  techStack   String[]
+  links       ProjectLink[]
+
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  articles  Article[]
+
+  @@index([id])
+  @@index([slug])
+}
+
+model ProjectLink {
+  id        String   @id @default(uuid())
+  type      LinkType
+  url       String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+
+  @@index([projectId])
+}
+
+model Config {
+  id            Int      @id @default(1)
+  secretKeyHash String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model SessionToken {
+  id             String    @id @default(uuid())
+  sessionTokenId String    @unique
+  userId         String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @default(now()) @updatedAt
+  usedAt         DateTime?
+  revoked        Boolean   @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Messages {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  status    MessageStatus @default(UNREAD)
+  createdAt DateTime @default(now())
+}
