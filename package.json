@@ -10,7 +10,7 @@
     "prisma:studio": "prisma studio",
     "start": "node index.js",
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
+    "build": "prisma generate && tsc",
     "seed": "tsx src/seed/admin.seed.ts",
     "seed:config": "tsx src/seed/config.seed.ts"
   },
