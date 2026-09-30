@@ -4,6 +4,7 @@ interface Config {
   NODE_ENV: string;
   DATABASE_URL: string;
   CORS_ORIGIN?: string;
+  CMS_URL?: string;
   REDIS_URL: string;
   PORT: number;
   SERVER_SECRET: string;
@@ -22,6 +23,7 @@ const config: Config = {
   NODE_ENV: env.NODE_ENV || "development",
   DATABASE_URL: env.DATABASE_URL || "",
   CORS_ORIGIN: env.CORS_ORIGIN,
+  CMS_URL: env.CMS_URL,
   REDIS_URL: env.REDIS_URL || "",
   PORT: env.PORT ,
   SERVER_SECRET: env.SERVER_SECRET || "",

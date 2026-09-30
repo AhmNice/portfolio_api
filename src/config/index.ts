@@ -8,6 +8,7 @@ const envSchema = z.object({
     .default("development"),
   DATABASE_URL: z.string().url(),
   CORS_ORIGIN: z.string().url().optional(),
+  CMS_URL: z.string().url().optional(),
   REDIS_URL: z.string().url(),
   PORT: z
     .string()

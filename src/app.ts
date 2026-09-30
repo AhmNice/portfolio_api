@@ -8,7 +8,8 @@ import router from "./routes/index.route.js";
 const app = express();
 
 const origin = config.CORS_ORIGIN || "http://localhost:3000";
-const allowedOrigins = [origin, "http://localhost:5174" ,"https://porfolio-snowy-nine.vercel.app"];
+const cms_url = config.CMS_URL || "http://localhost:5174"
+const allowedOrigins = [origin, cms_url];
 app.use(helmetMiddleware);
 app.use(
   cors({
