@@ -219,13 +219,13 @@ export type ConfigOrderByWithRelationInput = {
 
 export type ConfigWhereUniqueInput = Prisma.AtLeast<{
   id?: number
+  secretKeyHash?: string
   AND?: Prisma.ConfigWhereInput | Prisma.ConfigWhereInput[]
   OR?: Prisma.ConfigWhereInput[]
   NOT?: Prisma.ConfigWhereInput | Prisma.ConfigWhereInput[]
-  secretKeyHash?: Prisma.StringFilter<"Config"> | string
   createdAt?: Prisma.DateTimeFilter<"Config"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Config"> | Date | string
-}, "id">
+}, "id" | "secretKeyHash">
 
 export type ConfigOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

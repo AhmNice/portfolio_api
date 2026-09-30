@@ -7,7 +7,7 @@ const admin = {
   password: "Musa@1234",
 };
 
-const adminSeed = async () => {
+export const adminSeed = async () => {
   try {
     const existingAdmin = await prisma.user.findUnique({
       where: {

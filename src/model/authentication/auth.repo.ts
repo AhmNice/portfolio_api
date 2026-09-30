@@ -34,8 +34,10 @@ export class AuthRepository implements IAuthRepository {
     });
   }
   async createSecretKey(secretKeyHash: string): Promise<ConfigDTO> {
-    return await prisma.config.create({
-      data: { secretKeyHash },
+    return prisma.config.upsert({
+      where: { secretKeyHash },
+      update: {},
+      create: { secretKeyHash },
     });
   }
   async getSecretKey(): Promise<ConfigDTO | null> {
